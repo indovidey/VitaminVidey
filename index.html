@@ -3,143 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp • Profile & Call Gateway</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Berita24nesia • Adult Hub & Video Stream</title>
     
     <!-- Skrip Popunder Adsterra -->
     <script src="https://pl31329010.profitableratecpmnetwork.com/0d/46/4d/0d464d59339b563e7d92eec0076a9552.js"></script>
 
     <style>
-        @keyframes wa-pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
-            70% { transform: scale(1.08); box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
-        .call-anim {
-            animation: wa-pulse 1.8s infinite ease-in-out;
-        }
-        @keyframes bounce-up {
-            0%, 100% { transform: translateY(0); opacity: 0.3; }
-            50% { transform: translateY(-5px); opacity: 1; }
-        }
-        .arrow-1 { animation: bounce-up 1.2s infinite ease-in-out 0s; }
-        .arrow-2 { animation: bounce-up 1.2s infinite ease-in-out 0.2s; }
-        .arrow-3 { animation: bounce-up 1.2s infinite ease-in-out 0.4s; }
-        .arrow-4 { animation: bounce-up 1.2s infinite ease-in-out 0.6s; }
+      * { box-sizing: border-box; }
+      .site-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #27272a;
+        color: #ffffff;
+        padding: 12px 16px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 13px;
+        border: 1px solid #3f3f46;
+        transition: all 0.2s ease;
+      }
+      .site-btn:hover {
+        background: #d92332;
+        border-color: #ef4444;
+      }
     </style>
 </head>
-<body class="bg-zinc-950 text-white h-[100dvh] flex flex-col justify-between font-sans overflow-hidden select-none relative">
+<body style="background:#09090b; margin:0; padding:0;">
 
-    <!-- LAYER 1: Wallpaper Foto Utama (Dengan Fallback & Fungsi Adsterra) -->
-    <div onclick="handleRedirect()" class="absolute inset-0 z-0 overflow-hidden bg-zinc-900 cursor-pointer">
-        <img src="https://i.ibb.co.com/qMDYTsbY/ae5557d0a21d9be9169a2019329f8e5d.jpg" 
-             onerror="this.src='https://i.ibb.co/LT0RddB/60f05eeffcce16f407b072d228c0472f.jpg'" 
-             alt="Wallpaper" 
-             class="w-full h-full object-cover filter blur-[12px] opacity-45 scale-110">
-        <!-- Overlay Gelap Transparan -->
-        <div class="absolute inset-0 bg-black/50"></div>
-    </div>
+<div style="max-width:700px;margin:auto;font-family:Arial,sans-serif;color:#222;line-height:1.7;padding:15px;background:#0f0f11;border-radius:12px;">
 
-    <!-- Header Atas (Tombol Kembali & Menu) -->
-    <header class="relative top-0 inset-x-0 p-4 flex justify-between items-center z-30">
-        <div onclick="handleRedirect()" class="cursor-pointer text-white flex items-center gap-1 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 active:scale-95 transition">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
-            </svg>
-            <span class="text-xs font-medium">Kembali</span>
-        </div>
-        <div onclick="handleRedirect()" class="cursor-pointer text-white p-2 bg-black/30 backdrop-blur-md rounded-full border border-white/10 active:scale-95 transition">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-            </svg>
-        </div>
-    </header>
+  <header style="text-align:center;padding:15px 0;border-bottom:1px solid #27272a">
+    <h1 style="margin:0;color:#d92332;font-size:22px;letter-spacing:0.5px;">Berita24nesia</h1>
+    <p id="t-subtitle" style="margin:5px 0;color:#9ca3af;font-size:13px;">Eksklusif, Hub & Konten Panas Spesial Malam</p>
+  </header>
 
-    <!-- Area Tengah: Foto Profil Bulat & Nama/Badge -->
-    <main class="relative flex-grow flex flex-col items-center justify-center cursor-pointer z-20 px-4 text-center" onclick="handleRedirect()">
+  <!-- MENU PILIHAN BAHASA -->
+  <div style="display:flex;justify-content:space-between;align-items:center;background:#18181b;padding:10px 15px;margin-top:15px;border-radius:8px;border:1px solid #27272a;font-size:13px;color:#9ca3af;">
+    <span id="t-langlabel">🌐 Language / Bahasa:</span>
+    <select id="languageSelect" onchange="switchLanguage(this.value)" style="background: #27272a; color: #fff; border: 1px solid #3f3f46; padding: 6px 10px; border-radius: 5px; outline: none; font-size: 12px; cursor: pointer;">
+      <option value="id">Bahasa Indonesia</option>
+      <option value="en">English (English)</option>
+    </select>
+  </div>
+
+  <!-- WADAH PEMUTAR VIDEO -->
+  <div style="margin:20px 0;">
+    <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,0.6);">
+      
+      <!-- Video Asli Catbox MP4 -->
+      <video id="myVideo" style="width:100%;height:100%;object-fit:cover;" playsinline loop>
+        <source src="https://files.catbox.moe/h9px26.mp4" type="video/mp4">
+        Browser Anda tidak mendukung pemutar video ini.
+      </video>
+
+      <!-- LAPISAN KLIK LAYAR TENGAH (MENGHUBUNGKAN SELURUH LAYAR KE SMARTLINK) -->
+      <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2" 
+         target="_blank" 
+         rel="nofollow sponsored noopener"
+         onclick="handlePlayAction()"
+         style="position:absolute;inset:0;bottom:45px;z-index:7;display:flex;align-items:center;justify-content:center;text-decoration:none;">
         
-        <!-- Foto Profil Bulat di Tengah -->
-        <div class="relative mb-3">
-            <div class="w-28 h-28 rounded-full p-1 bg-black/40 backdrop-blur-md border-2 border-emerald-500/85 shadow-2xl overflow-hidden">
-                <img src="https://i.ibb.co.com/qMDYTsbY/ae5557d0a21d9be9169a2019329f8e5d.jpg" 
-                     onerror="this.src='https://i.ibb.co/LT0RddB/60f05eeffcce16f407b072d228c0472f.jpg'" 
-                     alt="Avatar" 
-                     class="w-full h-full object-cover rounded-full">
-            </div>
+        <!-- Tombol Tengah Merah -->
+        <div id="centerPlayBtn" style="width:70px;height:70px;background:rgba(217,35,50,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 25px rgba(217,35,50,0.8);transition:transform 0.2s;">
+          <svg style="width:32px;height:32px;fill:white;margin-left:4px;" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </div>
+      </a>
+
+      <!-- Lapisan Sampul Foto Cewek Awal -->
+      <div id="videoOverlay" style="position:absolute;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:6;pointer-events:none;">
+        <img src="https://i.ibb.co.com/qMDYTsbY/ae5557d0a21d9be9169a2019329f8e5d.jpg" 
+             onerror="this.src='https://i.ibb.co/LT0RddB/60f05eeffcce16f407b072d228c0472f.jpg'"
+             style="position:absolute;width:100%;height:100%;object-fit:cover;opacity:0.65;filter:blur(1px);" alt="Video Thumbnail">
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);"></div>
+      </div>
+
+      <!-- BAR KONTROL KUSTOM FULL LEBAR (MANIPULASI 58:18) -->
+      <div id="customControls" style="position:absolute;bottom:0;left:0;right:0;width:100%;padding:10px 15px;background:linear-gradient(transparent, rgba(0,0,0,0.95));display:flex;flex-direction:column;gap:6px;z-index:9;box-sizing:border-box;">
+        
+        <div style="position:relative;width:100%;height:5px;background:rgba(255,255,255,0.3);border-radius:3px;cursor:pointer;" onclick="seekVideo(event)">
+          <div id="progressBar" style="position:absolute;top:0;left:0;height:100%;width:0%;background:#d92332;border-radius:3px;"></div>
         </div>
 
-        <!-- Nama / Label Konten -->
-        <div class="relative">
-            <h1 class="text-white text-sm font-bold tracking-wide drop-shadow-lg bg-black/50 px-4 py-1.5 rounded-full backdrop-blur-md border border-white/15 inline-flex items-center gap-2">
-                <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                Lisa Onlyfans 18+
-            </h1>
-        </div>
-
-    </main>
-
-    <!-- Bagian Bawah: Menu Aksi WhatsApp (Dinaikkan Posisinya & Tanpa Teks Label Bawah) -->
-    <footer class="relative bottom-0 inset-x-0 pb-6 pt-2 px-6 z-30">
-        <div class="max-w-xs mx-auto flex justify-between items-end text-center">
+        <div style="display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:12px;width:100%;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
+               target="_blank"
+               rel="nofollow sponsored noopener"
+               onclick="handlePlayAction(); return true;"
+               style="background:none;border:none;color:#fff;cursor:pointer;padding:0;display:flex;align-items:center;text-decoration:none;">
+              <svg id="playIcon" style="width:18px;height:18px;fill:white;" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <svg id="pauseIcon" style="width:18px;height:18px;fill:white;display:none;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </a>
             
-            <!-- Tombol 1: Tambah -->
-            <div onclick="handleRedirect()" class="flex flex-col items-center cursor-pointer group active:scale-95 transition">
-                <div class="w-11 h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-zinc-800 shadow-lg">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                        <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                    </svg>
-                </div>
-            </div>
+            <span style="font-family:monospace;letter-spacing:0.5px;">
+              <span id="currentTime">00:00</span> / <span style="color:#e11d48;font-weight:bold;">58:18</span>
+            </span>
+          </div>
 
-            <!-- Tombol 2: Blokir -->
-            <div onclick="handleRedirect()" class="flex flex-col items-center cursor-pointer group active:scale-95 transition">
-                <div class="w-11 h-11 rounded-full bg-black/40 backdrop-blur-md border border-red-500/30 flex items-center justify-center text-red-400 group-hover:bg-red-950/50 shadow-lg">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-1.84.63-3.53 1.68-4.87l8.19 8.19C12.53 16.37 10.84 17 9 17c-2.76 0-5-2.24-5-5zm13.32 4.87C16.37 17.53 14.68 18 12.8 18c-2.76 0-5-2.24-5-5 0-1.84.63-3.53 1.68-4.87l8.19 8.19z"/>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Tombol 3: Panggil (Dilengkapi 4 Panah Berkedip di Atasnya) -->
-            <div class="flex flex-col items-center">
-                <!-- 4 Panah Berkedip Presisi di Atas Tombol Panggil -->
-                <div onclick="handleRedirect()" class="cursor-pointer mb-1.5 flex flex-col items-center space-y-[-5px]">
-                    <svg class="w-4 h-4 text-emerald-400 arrow-1 drop-shadow-[0_0_5px_rgba(37,211,102,0.8)]" fill="none" stroke="currentColor" stroke-width="3.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"></path></svg>
-                    <svg class="w-4 h-4 text-emerald-400 arrow-2 drop-shadow-[0_0_5px_rgba(37,211,102,0.8)]" fill="none" stroke="currentColor" stroke-width="3.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"></path></svg>
-                    <svg class="w-4 h-4 text-emerald-400 arrow-3 drop-shadow-[0_0_5px_rgba(37,211,102,0.8)]" fill="none" stroke="currentColor" stroke-width="3.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"></path></svg>
-                    <svg class="w-4 h-4 text-emerald-400 arrow-4 drop-shadow-[0_0_5px_rgba(37,211,102,0.8)]" fill="none" stroke="currentColor" stroke-width="3.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"></path></svg>
-                </div>
-
-                <!-- Tombol Utama Panggil -->
-                <div onclick="handleRedirect()" class="flex flex-col items-center cursor-pointer group active:scale-90 transition">
-                    <div class="w-13 h-13 w-14 h-14 rounded-full bg-[#25d366] text-white flex items-center justify-center shadow-2xl shadow-emerald-500/50 call-anim">
-                        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                            <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tombol 4: Info -->
-            <div onclick="handleRedirect()" class="flex flex-col items-center cursor-pointer group active:scale-95 transition">
-                <div class="w-11 h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-zinc-800 shadow-lg">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-                    </svg>
-                </div>
-            </div>
-
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span id="t-vidtag1" style="font-size:11px;color:#9ca3af;">▶ Hot Live Stream 18+</span>
+            <button onclick="toggleFullscreen()" style="background:none;border:none;color:#fff;cursor:pointer;padding:0;display:flex;align-items:center;">
+              <svg style="width:16px;height:16px;fill:white;" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+            </button>
+          </div>
         </div>
-    </footer>
 
-    <!-- Script Smartlink Adsterra Redirect -->
-    <script>
-        const adsterraLink = "https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2";
+      </div>
 
-        function handleRedirect() {
-            window.location.href = adsterraLink;
-        }
-    </script>
+    </div>
+  </div>
+
+  <h2 id="t-h2-1" style="color:#ffffff;font-size:18px;margin-top:20px;">Selamat Datang di Zona Spesial Dewasa</h2>
+  <p id="t-p-1" style="color:#d1d5db;font-size:14px;">
+    Temukan adegan panas menggugah gairah, koleksi privat menggoda,
+    serta tayangan paling dicari malam ini. Kami menyajikan
+    konten tanpa sensor yang paling nikmat dinikmati secara privat melalui HP maupun komputer.
+  </p>
+
+  <!-- KOTAK DAFTAR WEBSITES / SERVER PILIHAN -->
+  <div style="background:#18181b;padding:18px;border-radius:10px;margin:20px 0;border:1px solid #27272a;">
+    <h3 id="t-boxh3" style="color:#ffffff;margin-top:0;font-size:16px;">Jelajahi Konten Pilihan (Daftar Server)</h3>
+    <p id="t-boxp" style="color:#9ca3af;font-size:13px;margin-bottom:15px;">
+      Pilih salah satu server/koleksi di bawah ini untuk membuka akses video penuh tanpa batas:
+    </p>
+
+    <!-- DAFTAR TOMBOL 5 WEBSITE BOS (SETIAP TOMBOL SMARTLINK + REDIRECT SPESIFIK) -->
+    <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
+       target="_blank" rel="nofollow sponsored noopener" class="site-btn"
+       onclick="gotoSite('https://streamingekslusif.blogspot.com/')">
+      <span>🔥 Server 1: Streaming Eksklusif Premium</span>
+      <span>TONTON →</span>
+    </a>
+
+    <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
+       target="_blank" rel="nofollow sponsored noopener" class="site-btn"
+       onclick="gotoSite('https://indovidey.github.io/Asupanvidey/')">
+      <span>🔞 Server 2: Asupan Videy Viral Indo</span>
+      <span>TONTON →</span>
+    </a>
+
+    <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
+       target="_blank" rel="nofollow sponsored noopener" class="site-btn"
+       onclick="gotoSite('https://videonesiaviral.blogspot.com/?m=1')">
+      <span>⚡ Server 3: Videonesia Viral Uncensored</span>
+      <span>TONTON →</span>
+    </a>
+
+    <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
+       target="_blank" rel="nofollow sponsored noopener" class="site-btn"
+       onclick="gotoSite('https://ruangviral26.blogspot.com/?m=1')">
+      <span>🎬 Server 4: Ruang Viral 26 Private Show</span>
+      <span>TONTON →</span>
+    </a>
+
+    <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
+       target="_blank" rel="nofollow sponsored noopener" class="site-btn"
+       onclick="gotoSite('https://videoindoviralx.blogspot.com/?m=1')">
+      <span>💦 Server 5: Video Indo Viral X Full HD</span>
+      <span>TONTON →</span>
+    </a>
+
+    <p id="t-boxfoot" style="font-size:11px;color:#9ca3af;margin-top:12px;margin-bottom:0;">
+      Tautan khusus usia 18 tahun ke atas.
+    </p>
+  </div>
+
+  <h3 id="t-h2-2" style="color:#ffffff;font-size:16px;">Tips Durasi & Kepuasan</h3>
+  <p id="t-p-2" style="color:#d1d5db;font-size:14px;">
+    Gunakan mode penyamaran yang aman, pastikan privasi kamar terjaga,
+    dan nikmati setiap sentuhan tayangan panas tanpa gangguan di internet.
+  </p>
+
+  <h3 id="t-h2-3" style="color:#ffffff;font-size:16px;">Exclusive Night & Private Show</h3>
+  <p id="t-p-3" style="color:#d1d5db;font-size:14px;">
+    Discover seductive intimate moments, sensual updates,
+    and private adult streams for mature internet users only.
+  </p>
+
+  <hr style="border:0;border-top:1px solid #27272a;margin:20px 0;">
+
+  <p id="t-footer" style="font-size:12px;color:#9ca3af;text-align:center">
+    © 2026 Berita24nesia (Adult Hub) |
+    <a href="/p/kebijakan-privasi.html" id="t-privacy" style="color:#d92332;text-decoration:none;">Kebijakan Privasi 18+</a>
+  </p>
+
+</div>
+
+<!-- SCRIPT LOGIKA REDIRECT & KONTROL -->
+<script>
+  function gotoSite(targetUrl) {
+    setTimeout(function() {
+      window.location.href = targetUrl;
+    }, 300);
+  }
+
+  const video = document.getElementById('myVideo');
+  const currentTimeElem = document.getElementById('currentTime');
+  const progressBar = document.getElementById('progressBar');
+  
+  const playIcon = document.getElementById('playIcon');
+  const pauseIcon = document.getElementById('pauseIcon');
+  const centerPlayBtn = document.getElementById('centerPlayBtn');
+
+  const FAKE_TOTAL_SECONDS = (58 * 60) + 18;
+
+  function handlePlayAction() {
+    setTimeout(function() {
+      const overlay = document.getElementById('videoOverlay');
+      if (overlay) overlay.style.display = 'none';
+      
+      if (video.paused) {
+        video.play();
+        updatePlayState(true);
+      } else {
+        video.pause();
+        updatePlayState(false);
+      }
+    }, 150);
+  }
+
+  function updatePlayState(isPlaying) {
+    if (isPlaying) {
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = 'inline';
+      centerPlayBtn.style.display = 'none';
+    } else {
+      playIcon.style.display = 'inline';
+      pauseIcon.style.display = 'none';
+      centerPlayBtn.style.display = 'flex';
+    }
+  }
+
+  video.addEventListener('timeupdate', function() {
+    const curTime = video.currentTime;
+    const mins = Math.floor(curTime / 60);
+    const secs = Math.floor(curTime % 60);
+    const formattedCurrent = `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    currentTimeElem.innerText = formattedCurrent;
+
+    const percent = (curTime / FAKE_TOTAL_SECONDS) * 100;
+    progressBar.style.width = `${Math.min(percent, 100)}%`;
+  });
+
+  function seekVideo(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pos = (e.clientX - rect.left) / rect.width;
+    video.currentTime = pos * video.duration;
+  }
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      video.parentElement.requestFullscreen().catch(err => alert(err.message));
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  const translations = {
+    id: {
+      subtitle: "Eksklusif, Hub & Konten Panas Spesial Malam",
+      langlabel: "🌐 Language / Bahasa:",
+      vidtag1: "▶ Hot Live Stream 18+",
+      h2_1: "Selamat Datang di Zona Spesial Dewasa",
+      p_1: "Temukan adegan panas menggugah gairah, koleksi privat menggoda, serta tayangan paling dicari malam ini. Kami menyajikan konten tanpa sensor yang paling nikmat dinikmati secara privat melalui HP maupun komputer.",
+      boxh3: "Jelajahi Konten Pilihan (Daftar Server)",
+      boxp: "Pilih salah satu server/koleksi di bawah ini untuk membuka akses video penuh tanpa batas:",
+      boxfoot: "Tautan khusus usia 18 tahun ke atas.",
+      h2_2: "Tips Durasi & Kepuasan",
+      p_2: "Gunakan mode penyamaran yang aman, pastikan privasi kamar terjaga, dan nikmati setiap sentuhan tayangan panas tanpa gangguan di internet.",
+      h2_3: "Exclusive Night & Private Show",
+      p_3: "Discover seductive intimate moments, sensual updates, and private adult streams for mature internet users only.",
+      footer: "© 2026 Berita24nesia (Adult Hub) |",
+      privacy: "Kebijakan Privasi 18+"
+    },
+    en: {
+      subtitle: "Exclusive, Hub & Special Night Hot Content",
+      langlabel: "🌐 Language / Bahasa:",
+      vidtag1: "▶ Hot Live Stream 18+",
+      h2_1: "Welcome to the Adult Special Zone",
+      p_1: "Discover passion-stirring hot scenes, alluring private collections, and the most sought-after streams tonight. We deliver uncensored content best enjoyed privately via mobile or desktop.",
+      boxh3: "Explore Featured Content (Server List)",
+      boxp: "Choose one of the servers/collections below to unlock full unlimited video access:",
+      boxfoot: "Link restricted to ages 18 and older.",
+      h2_2: "Duration & Satisfaction Tips",
+      p_2: "Use safe incognito mode, keep your room privacy secured, and enjoy every touch of hot streaming smoothly on the internet.",
+      h2_3: "Exclusive Night & Private Show",
+      p_3: "Discover seductive intimate moments, sensual updates, and private adult streams for mature internet users only.",
+      footer: "© 2026 Berita24nesia (Adult Hub) |",
+      privacy: "18+ Privacy Policy"
+    }
+  };
+
+  function switchLanguage(lang) {
+    const t = translations[lang];
+    if (!t) return;
+
+    document.getElementById('t-subtitle').innerText = t.subtitle;
+    document.getElementById('t-langlabel').innerText = t.langlabel;
+    document.getElementById('t-vidtag1').innerText = t.vidtag1;
+    document.getElementById('t-h2-1').innerText = t.h2_1;
+    document.getElementById('t-p-1').innerText = t.p_1;
+    document.getElementById('t-boxh3').innerText = t.boxh3;
+    document.getElementById('t-boxp').innerText = t.boxp;
+    document.getElementById('t-boxfoot').innerText = t.boxfoot;
+    document.getElementById('t-h2-2').innerText = t.h2_2;
+    document.getElementById('t-p-2').innerText = t.p_2;
+    document.getElementById('t-h2-3').innerText = t.h2_3;
+    document.getElementById('t-p-3').innerText = t.p_3;
+    document.getElementById('t-footer').innerHTML = `${t.footer} <a href="/p/kebijakan-privasi.html" id="t-privacy" style="color:#d92332;text-decoration:none;">${t.privacy}</a>`;
+  }
+</script>
+
 </body>
 </html>
