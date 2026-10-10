@@ -29,6 +29,16 @@
         background: #d92332;
         border-color: #ef4444;
       }
+
+      /* Animasi Berkedip untuk Banner Countdown */
+      @keyframes pulseBanner {
+        0% { transform: scale(1); box-shadow: 0 0 10px rgba(217,35,50,0.5); }
+        50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(217,35,50,0.9); }
+        100% { transform: scale(1); box-shadow: 0 0 10px rgba(217,35,50,0.5); }
+      }
+      .countdown-banner {
+        animation: pulseBanner 1.5s infinite ease-in-out;
+      }
     </style>
 </head>
 <body style="background:#09090b; margin:0; padding:0;">
@@ -132,7 +142,7 @@
       Pilih salah satu server/koleksi di bawah ini untuk membuka akses video penuh tanpa batas:
     </p>
 
-    <!-- DAFTAR TOMBOL 5 WEBSITE BOS (SETIAP TOMBOL SMARTLINK + REDIRECT SPESIFIK) -->
+    <!-- DAFTAR TOMBOL 5 WEBSITE BOS -->
     <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
        target="_blank" rel="nofollow sponsored noopener" class="site-btn"
        onclick="gotoSite('https://streamingekslusif.blogspot.com/')">
@@ -168,6 +178,24 @@
       <span>TONTON →</span>
     </a>
 
+    <!-- IKLAN BANNER COUNTDOWN KUSTOM (TIMER 5 DETIK) -->
+    <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
+       target="_blank" rel="nofollow sponsored noopener"
+       class="countdown-banner"
+       style="display:block; background:linear-gradient(135deg, #7f1d1d, #b91c1c); border:2px solid #ef4444; border-radius:8px; padding:12px; margin-top:20px; text-decoration:none; color:#ffffff; text-align:center;">
+      <div style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#fca5a5; font-weight:bold;">⚡ Penawaran Terbatas VIP 18+</div>
+      <div style="font-size:15px; font-weight:bold; margin:4px 0; color:#fff;">KLIK SEKARANG SEBELUM LINK KADALUARSA!</div>
+      <div style="font-size:20px; font-weight:bold; font-family:monospace; background:rgba(0,0,0,0.5); display:inline-block; padding:4px 12px; border-radius:5px; color:#facc15; margin-top:4px;">
+        ⏳ Berakhir Dalam: <span id="bannerTimer">00:05</span>
+      </div>
+    </a>
+
+    <!-- NATIVE BANNER ADSTERRA ORIGINAL -->
+    <div style="margin-top:15px; text-align:center; overflow:hidden;">
+      <script async="async" data-cfasync="false" src="https://pl31329011.profitableratecpmnetwork.com/5f5871d4eb4905bdb97d4837d5aa8a26/invoke.js"></script>
+      <div id="container-5f5871d4eb4905bdb97d4837d5aa8a26"></div>
+    </div>
+
     <p id="t-boxfoot" style="font-size:11px;color:#9ca3af;margin-top:12px;margin-bottom:0;">
       Tautan khusus usia 18 tahun ke atas.
     </p>
@@ -194,8 +222,24 @@
 
 </div>
 
-<!-- SCRIPT LOGIKA REDIRECT & KONTROL -->
+<!-- SCRIPT LOGIKA REDIRECT, KONTROL & TIMER COUNTDOWN 5 DETIK -->
 <script>
+  // LOGIKA HITUNG MUNDUR (COUNTDOWN TIMER 5 DETIK)
+  let timeInSeconds = 5;
+  function startBannerTimer() {
+    const timerElem = document.getElementById('bannerTimer');
+    setInterval(function() {
+      if (timeInSeconds <= 0) {
+        timeInSeconds = 5; // Reset otomatis ke 5 detik jika habis
+      }
+      let mins = Math.floor(timeInSeconds / 60);
+      let secs = timeInSeconds % 60;
+      timerElem.innerText = `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+      timeInSeconds--;
+    }, 1000);
+  }
+  startBannerTimer();
+
   function gotoSite(targetUrl) {
     setTimeout(function() {
       window.location.href = targetUrl;
@@ -278,7 +322,7 @@
       p_2: "Gunakan mode penyamaran yang aman, pastikan privasi kamar terjaga, dan nikmati setiap sentuhan tayangan panas tanpa gangguan di internet.",
       h2_3: "Exclusive Night & Private Show",
       p_3: "Discover seductive intimate moments, sensual updates, and private adult streams for mature internet users only.",
-      footer: "© 2026 Berita24nesia (Adult Hub) |",
+      footer: "© 2026 Video Premium (Adult Hub) |",
       privacy: "Kebijakan Privasi 18+"
     },
     en: {
@@ -294,7 +338,7 @@
       p_2: "Use safe incognito mode, keep your room privacy secured, and enjoy every touch of hot streaming smoothly on the internet.",
       h2_3: "Exclusive Night & Private Show",
       p_3: "Discover seductive intimate moments, sensual updates, and private adult streams for mature internet users only.",
-      footer: "© 2026 Berita24nesia (Adult Hub) |",
+      footer: "© 2026 Video Premium (Adult Hub) |",
       privacy: "18+ Privacy Policy"
     }
   };
