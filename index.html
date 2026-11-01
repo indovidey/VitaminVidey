@@ -3,366 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Premium • Adult Hub & Video Stream</title>
-    
+    <title>Vidoy - Video Player</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #0b0c10;
+            color: #ffffff;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="w-full py-4 px-6 md:px-12 flex items-center justify-between border-b border-gray-800/50">
+        <div class="flex items-center gap-2">
+            <div class="bg-gradient-to-r from-pink-500 to-rose-500 text-white p-2 rounded-lg flex items-center justify-center font-bold text-xl shadow-lg shadow-pink-500/20">
+                <i class="fa-solid fa-play text-sm"></i>
+            </div>
+            <span class="text-2xl font-black tracking-wider italic">vidoy</span>
+        </div>
+        <div>
+            <button class="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-medium px-5 py-2.5 rounded-full flex items-center gap-2 shadow-lg shadow-pink-500/20 transition-all duration-200">
+                <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-6 flex flex-col gap-6">
+        
+        <!-- Video Player Container -->
+        <div class="relative w-full aspect-[9/16] md:aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-gray-800 group flex items-center justify-center">
+            
+            <!-- Video Thumbnail -->
+            <img src="https://i.ibb.co.com/CsHyndTb/1793519998111.jpg" alt="Video Cover" class="absolute inset-0 w-full h-full object-cover opacity-80">
+            
+            <!-- Dark Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"></div>
+
+            <!-- Top Controls -->
+            <div class="absolute top-4 right-4 flex items-center gap-4 text-white">
+                <button class="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center hover:bg-black/60 transition">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+                <button class="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center hover:bg-black/60 transition">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+            </div>
+
+            <!-- Center Big Play Button (Redirect to Exastream) -->
+            <button onclick="redirectToExastream()" class="absolute w-16 h-16 md:w-20 md:h-20 bg-pink-500 hover:bg-pink-600 rounded-full flex items-center justify-center text-white shadow-xl shadow-pink-500/40 transition transform hover:scale-105 cursor-pointer">
+                <i class="fa-solid fa-play text-2xl md:text-3xl ml-1"></i>
+            </button>
+
+            <!-- Watermark Text -->
+            <div class="absolute bottom-16 left-6 text-sm text-gray-200 font-medium">
+                Ini Pak Sean Hall.
+            </div>
+
+            <!-- Bottom Controls Bar -->
+            <div class="absolute bottom-0 left-0 right-0 p-4 flex flex-col gap-2 bg-gradient-to-t from-black/90 to-transparent">
+                <div class="flex items-center gap-3">
+                    <button class="text-white hover:text-pink-400 transition">
+                        <i class="fa-solid fa-play text-sm"></i>
+                    </button>
+                    <!-- Progress Bar (Digeser ke kiri pol) -->
+                    <div class="flex-1 relative h-1.5 bg-white/30 rounded-full cursor-pointer">
+                        <div class="absolute top-0 left-0 h-full w-[0%] bg-pink-500 rounded-full"></div>
+                        <div class="absolute top-1/2 left-0 -translate-y-1/2 w-3 h-3 bg-pink-500 rounded-full shadow"></div>
+                    </div>
+                    <!-- Waktu Diubah Menjadi 23:47 -->
+                    <span class="text-xs text-gray-300 font-mono">23:47</span>
+                    <div class="flex items-center gap-3 text-gray-300">
+                        <button class="hover:text-white transition"><i class="fa-solid fa-up-right-from-square"></i></button>
+                        <button class="hover:text-white transition"><i class="fa-solid fa-expand"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Title -->
+        <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white leading-snug">
+            Main Sama Teman Sekolah  !!
+        </h1>
+
+        <!-- Metadata Badges -->
+        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-300">
+            <div class="flex items-center gap-2 bg-[#161821] border border-gray-800 px-4 py-2.5 rounded-xl">
+                <i class="fa-regular fa-clock text-pink-500"></i>
+                <span>23:47</span>
+            </div>
+            <div class="flex items-center gap-2 bg-[#161821] border border-gray-800 px-4 py-2.5 rounded-xl">
+                <i class="fa-solid fa-database text-pink-500"></i>
+                <span>26.9 MB</span>
+            </div>
+            <div class="flex items-center gap-2 bg-[#161821] border border-gray-800 px-4 py-2.5 rounded-xl">
+                <i class="fa-regular fa-eye text-pink-500"></i>
+                <span>927k views</span>
+            </div>
+        </div>
+
+        <div class="inline-flex items-center gap-2.5 bg-[#161821] border border-gray-800 px-4 py-2.5 rounded-xl w-fit text-sm text-gray-300">
+            <i class="fa-regular fa-calendar text-pink-500"></i>
+            <span>12 September 2026</span>
+        </div>
+
+    </main>
+
+    <!-- JavaScript untuk Redirect ke Exastream -->
+    <script>
+        function redirectToExastream() {
+            window.location.href = 'https://tribunvideo.tech/d/0675a282';
+        }
+    </script>
+
     <!-- Skrip Popunder Adsterra -->
     <script src="https://pl31329010.profitableratecpmnetwork.com/0d/46/4d/0d464d59339b563e7d92eec0076a9552.js"></script>
 
-    <style>
-      * { box-sizing: border-box; }
-      .site-btn {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: #27272a;
-        color: #ffffff;
-        padding: 12px 16px;
-        margin-bottom: 10px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 13px;
-        border: 1px solid #3f3f46;
-        transition: all 0.2s ease;
-      }
-      .site-btn:hover {
-        background: #d92332;
-        border-color: #ef4444;
-      }
-
-      /* Animasi Berkedip untuk Banner Countdown */
-      @keyframes pulseBanner {
-        0% { transform: scale(1); box-shadow: 0 0 10px rgba(217,35,50,0.5); }
-        50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(217,35,50,0.9); }
-        100% { transform: scale(1); box-shadow: 0 0 10px rgba(217,35,50,0.5); }
-      }
-      .countdown-banner {
-        animation: pulseBanner 1.5s infinite ease-in-out;
-      }
-    </style>
-</head>
-<body style="background:#09090b; margin:0; padding:0;">
-
-<div style="max-width:700px;margin:auto;font-family:Arial,sans-serif;color:#222;line-height:1.7;padding:15px;background:#0f0f11;border-radius:12px;">
-
-  <header style="text-align:center;padding:15px 0;border-bottom:1px solid #27272a">
-    <h1 style="margin:0;color:#d92332;font-size:22px;letter-spacing:0.5px;">Video Premium</h1>
-    <p id="t-subtitle" style="margin:5px 0;color:#9ca3af;font-size:13px;">Eksklusif, Hub & Konten Panas Spesial Malam</p>
-  </header>
-
-  <!-- MENU PILIHAN BAHASA -->
-  <div style="display:flex;justify-content:space-between;align-items:center;background:#18181b;padding:10px 15px;margin-top:15px;border-radius:8px;border:1px solid #27272a;font-size:13px;color:#9ca3af;">
-    <span id="t-langlabel">🌐 Language / Bahasa:</span>
-    <select id="languageSelect" onchange="switchLanguage(this.value)" style="background: #27272a; color: #fff; border: 1px solid #3f3f46; padding: 6px 10px; border-radius: 5px; outline: none; font-size: 12px; cursor: pointer;">
-      <option value="id">Bahasa Indonesia</option>
-      <option value="en">English (English)</option>
-    </select>
-  </div>
-
-  <!-- WADAH PEMUTAR VIDEO -->
-  <div style="margin:20px 0;">
-    <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,0.6);">
-      
-      <!-- Video Asli Catbox MP4 -->
-      <video id="myVideo" style="width:100%;height:100%;object-fit:cover;" playsinline loop>
-        <source src="https://tribunvideo.tech/e/0675a282.mp4" type="video/mp4">
-        Browser Anda tidak mendukung pemutar video ini.
-      </video>
-
-      <!-- LAPISAN KLIK LAYAR TENGAH (MENGHUBUNGKAN SELURUH LAYAR KE SMARTLINK) -->
-      <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2" 
-         target="_blank" 
-         rel="nofollow sponsored noopener"
-         onclick="handlePlayAction()"
-         style="position:absolute;inset:0;bottom:45px;z-index:7;display:flex;align-items:center;justify-content:center;text-decoration:none;">
-        
-        <!-- Tombol Tengah Merah -->
-        <div id="centerPlayBtn" style="width:70px;height:70px;background:rgba(217,35,50,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 25px rgba(217,35,50,0.8);transition:transform 0.2s;">
-          <svg style="width:32px;height:32px;fill:white;margin-left:4px;" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-        </div>
-      </a>
-
-      <!-- Lapisan Sampul Foto Cewek Awal -->
-      <div id="videoOverlay" style="position:absolute;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:6;pointer-events:none;">
-        <img src="https://i.ibb.co.com/qMDYTsbY/ae5557d0a21d9be9169a2019329f8e5d.jpg" 
-             onerror="this.src='https://i.ibb.co/LT0RddB/60f05eeffcce16f407b072d228c0472f.jpg'"
-             style="position:absolute;width:100%;height:100%;object-fit:cover;opacity:0.65;filter:blur(1px);" alt="Video Thumbnail">
-        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);"></div>
-      </div>
-
-      <!-- BAR KONTROL KUSTOM FULL LEBAR (MANIPULASI 58:18) -->
-      <div id="customControls" style="position:absolute;bottom:0;left:0;right:0;width:100%;padding:10px 15px;background:linear-gradient(transparent, rgba(0,0,0,0.95));display:flex;flex-direction:column;gap:6px;z-index:9;box-sizing:border-box;">
-        
-        <div style="position:relative;width:100%;height:5px;background:rgba(255,255,255,0.3);border-radius:3px;cursor:pointer;" onclick="seekVideo(event)">
-          <div id="progressBar" style="position:absolute;top:0;left:0;height:100%;width:0%;background:#d92332;border-radius:3px;"></div>
-        </div>
-
-        <div style="display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:12px;width:100%;">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
-               target="_blank"
-               rel="nofollow sponsored noopener"
-               onclick="handlePlayAction(); return true;"
-               style="background:none;border:none;color:#fff;cursor:pointer;padding:0;display:flex;align-items:center;text-decoration:none;">
-              <svg id="playIcon" style="width:18px;height:18px;fill:white;" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              <svg id="pauseIcon" style="width:18px;height:18px;fill:white;display:none;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-            </a>
-            
-            <span style="font-family:monospace;letter-spacing:0.5px;">
-              <span id="currentTime">00:00</span> / <span style="color:#e11d48;font-weight:bold;">58:18</span>
-            </span>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:12px;">
-            <span id="t-vidtag1" style="font-size:11px;color:#9ca3af;">▶ Hot Live Stream 18+</span>
-            <button onclick="toggleFullscreen()" style="background:none;border:none;color:#fff;cursor:pointer;padding:0;display:flex;align-items:center;">
-              <svg style="width:16px;height:16px;fill:white;" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-
-  <h2 id="t-h2-1" style="color:#ffffff;font-size:18px;margin-top:20px;">Selamat Datang di Zona Spesial Dewasa</h2>
-  <p id="t-p-1" style="color:#d1d5db;font-size:14px;">
-    Temukan adegan panas menggugah gairah, koleksi privat menggoda,
-    serta tayangan paling dicari malam ini. Kami menyajikan
-    konten tanpa sensor yang paling nikmat dinikmati secara privat melalui HP maupun komputer.
-  </p>
-
-  <!-- KOTAK DAFTAR WEBSITES / SERVER PILIHAN -->
-  <div style="background:#18181b;padding:18px;border-radius:10px;margin:20px 0;border:1px solid #27272a;">
-    <h3 id="t-boxh3" style="color:#ffffff;margin-top:0;font-size:16px;">Jelajahi Konten Pilihan (Daftar Server)</h3>
-    <p id="t-boxp" style="color:#9ca3af;font-size:13px;margin-bottom:15px;">
-      Pilih salah satu server/koleksi di bawah ini untuk membuka akses video penuh tanpa batas:
-    </p>
-
-    <!-- DAFTAR TOMBOL 5 WEBSITE BOS -->
-    <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
-       target="_blank" rel="nofollow sponsored noopener" class="site-btn"
-       onclick="gotoSite('https://streamingekslusif.blogspot.com/')">
-      <span>🔥 Server 1: Video Eksklusif Premium</span>
-      <span>TONTON →</span>
-    </a>
-
-    <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
-       target="_blank" rel="nofollow sponsored noopener" class="site-btn"
-       onclick="gotoSite('https://indovidey.github.io/Asupanvidey/')">
-      <span>🔞 Server 2: Asupan Videy Viral Indo</span>
-      <span>TONTON →</span>
-    </a>
-
-    <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
-       target="_blank" rel="nofollow sponsored noopener" class="site-btn"
-       onclick="gotoSite('https://videonesiaviral.blogspot.com/?m=1')">
-      <span>⚡ Server 3: Video Viral Uncensored</span>
-      <span>TONTON →</span>
-    </a>
-
-    <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
-       target="_blank" rel="nofollow sponsored noopener" class="site-btn"
-       onclick="gotoSite('https://ruangviral26.blogspot.com/?m=1')">
-      <span>🎬 Server 4: Ruang Viral 26 Private Show</span>
-      <span>TONTON →</span>
-    </a>
-
-    <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
-       target="_blank" rel="nofollow sponsored noopener" class="site-btn"
-       onclick="gotoSite('https://videoindoviralx.blogspot.com/?m=1')">
-      <span>💦 Server 5: Video Indo Viral X Full HD</span>
-      <span>TONTON →</span>
-    </a>
-
-    <!-- IKLAN BANNER COUNTDOWN KUSTOM (TIMER 5 DETIK) -->
-    <a href="https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2"
-       target="_blank" rel="nofollow sponsored noopener"
-       class="countdown-banner"
-       style="display:block; background:linear-gradient(135deg, #7f1d1d, #b91c1c); border:2px solid #ef4444; border-radius:8px; padding:12px; margin-top:20px; text-decoration:none; color:#ffffff; text-align:center;">
-      <div style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#fca5a5; font-weight:bold;">⚡ Penawaran Terbatas VIP 18+</div>
-      <div style="font-size:15px; font-weight:bold; margin:4px 0; color:#fff;">KLIK SEKARANG SEBELUM LINK KADALUARSA!</div>
-      <div style="font-size:20px; font-weight:bold; font-family:monospace; background:rgba(0,0,0,0.5); display:inline-block; padding:4px 12px; border-radius:5px; color:#facc15; margin-top:4px;">
-        ⏳ Berakhir Dalam: <span id="bannerTimer">00:05</span>
-      </div>
-    </a>
-
-    <!-- NATIVE BANNER ADSTERRA ORIGINAL -->
-    <div style="margin-top:15px; text-align:center; overflow:hidden;">
-      <script async="async" data-cfasync="false" src="https://pl31329011.profitableratecpmnetwork.com/5f5871d4eb4905bdb97d4837d5aa8a26/invoke.js"></script>
-      <div id="container-5f5871d4eb4905bdb97d4837d5aa8a26"></div>
-    </div>
-
-    <p id="t-boxfoot" style="font-size:11px;color:#9ca3af;margin-top:12px;margin-bottom:0;">
-      Tautan khusus usia 18 tahun ke atas.
-    </p>
-  </div>
-
-  <h3 id="t-h2-2" style="color:#ffffff;font-size:16px;">Tips Durasi & Kepuasan</h3>
-  <p id="t-p-2" style="color:#d1d5db;font-size:14px;">
-    Gunakan mode penyamaran yang aman, pastikan privasi kamar terjaga,
-    dan nikmati setiap sentuhan tayangan panas tanpa gangguan di internet.
-  </p>
-
-  <h3 id="t-h2-3" style="color:#ffffff;font-size:16px;">Exclusive Night & Private Show</h3>
-  <p id="t-p-3" style="color:#d1d5db;font-size:14px;">
-    Discover seductive intimate moments, sensual updates,
-    and private adult streams for mature internet users only.
-  </p>
-
-  <hr style="border:0;border-top:1px solid #27272a;margin:20px 0;">
-
-  <p id="t-footer" style="font-size:12px;color:#9ca3af;text-align:center">
-    © 2026 Video Premium (Adult Hub) |
-    <a href="/p/kebijakan-privasi.html" id="t-privacy" style="color:#d92332;text-decoration:none;">Kebijakan Privasi 18+</a>
-  </p>
-
-</div>
-
-<!-- SCRIPT LOGIKA REDIRECT, KONTROL & TIMER COUNTDOWN 5 DETIK -->
-<script>
-  // LOGIKA HITUNG MUNDUR (COUNTDOWN TIMER 5 DETIK)
-  let timeInSeconds = 5;
-  function startBannerTimer() {
-    const timerElem = document.getElementById('bannerTimer');
-    setInterval(function() {
-      if (timeInSeconds <= 0) {
-        timeInSeconds = 5; // Reset otomatis ke 5 detik jika habis
-      }
-      let mins = Math.floor(timeInSeconds / 60);
-      let secs = timeInSeconds % 60;
-      timerElem.innerText = `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
-      timeInSeconds--;
-    }, 1000);
-  }
-  startBannerTimer();
-
-  function gotoSite(targetUrl) {
-    setTimeout(function() {
-      window.location.href = targetUrl;
-    }, 300);
-  }
-
-  const video = document.getElementById('myVideo');
-  const currentTimeElem = document.getElementById('currentTime');
-  const progressBar = document.getElementById('progressBar');
-  
-  const playIcon = document.getElementById('playIcon');
-  const pauseIcon = document.getElementById('pauseIcon');
-  const centerPlayBtn = document.getElementById('centerPlayBtn');
-
-  const FAKE_TOTAL_SECONDS = (58 * 60) + 18;
-
-  function handlePlayAction() {
-    setTimeout(function() {
-      const overlay = document.getElementById('videoOverlay');
-      if (overlay) overlay.style.display = 'none';
-      
-      if (video.paused) {
-        video.play();
-        updatePlayState(true);
-      } else {
-        video.pause();
-        updatePlayState(false);
-      }
-    }, 150);
-  }
-
-  function updatePlayState(isPlaying) {
-    if (isPlaying) {
-      playIcon.style.display = 'none';
-      pauseIcon.style.display = 'inline';
-      centerPlayBtn.style.display = 'none';
-    } else {
-      playIcon.style.display = 'inline';
-      pauseIcon.style.display = 'none';
-      centerPlayBtn.style.display = 'flex';
-    }
-  }
-
-  video.addEventListener('timeupdate', function() {
-    const curTime = video.currentTime;
-    const mins = Math.floor(curTime / 60);
-    const secs = Math.floor(curTime % 60);
-    const formattedCurrent = `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
-    currentTimeElem.innerText = formattedCurrent;
-
-    const percent = (curTime / FAKE_TOTAL_SECONDS) * 100;
-    progressBar.style.width = `${Math.min(percent, 100)}%`;
-  });
-
-  function seekVideo(e) {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const pos = (e.clientX - rect.left) / rect.width;
-    video.currentTime = pos * video.duration;
-  }
-
-  function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-      video.parentElement.requestFullscreen().catch(err => alert(err.message));
-    } else {
-      document.exitFullscreen();
-    }
-  }
-
-  const translations = {
-    id: {
-      subtitle: "Eksklusif, Hub & Konten Panas Spesial Malam",
-      langlabel: "🌐 Language / Bahasa:",
-      vidtag1: "▶ Hot Live Stream 18+",
-      h2_1: "Selamat Datang di Zona Spesial Dewasa",
-      p_1: "Temukan adegan panas menggugah gairah, koleksi privat menggoda, serta tayangan paling dicari malam ini. Kami menyajikan konten tanpa sensor yang paling nikmat dinikmati secara privat melalui HP maupun komputer.",
-      boxh3: "Jelajahi Konten Pilihan (Daftar Server)",
-      boxp: "Pilih salah satu server/koleksi di bawah ini untuk membuka akses video penuh tanpa batas:",
-      boxfoot: "Tautan khusus usia 18 tahun ke atas.",
-      h2_2: "Tips Durasi & Kepuasan",
-      p_2: "Gunakan mode penyamaran yang aman, pastikan privasi kamar terjaga, dan nikmati setiap sentuhan tayangan panas tanpa gangguan di internet.",
-      h2_3: "Exclusive Night & Private Show",
-      p_3: "Discover seductive intimate moments, sensual updates, and private adult streams for mature internet users only.",
-      footer: "© 2026 Video Premium (Adult Hub) |",
-      privacy: "Kebijakan Privasi 18+"
-    },
-    en: {
-      subtitle: "Exclusive, Hub & Special Night Hot Content",
-      langlabel: "🌐 Language / Bahasa:",
-      vidtag1: "▶ Hot Live Stream 18+",
-      h2_1: "Welcome to the Adult Special Zone",
-      p_1: "Discover passion-stirring hot scenes, alluring private collections, and the most sought-after streams tonight. We deliver uncensored content best enjoyed privately via mobile or desktop.",
-      boxh3: "Explore Featured Content (Server List)",
-      boxp: "Choose one of the servers/collections below to unlock full unlimited video access:",
-      boxfoot: "Link restricted to ages 18 and older.",
-      h2_2: "Duration & Satisfaction Tips",
-      p_2: "Use safe incognito mode, keep your room privacy secured, and enjoy every touch of hot streaming smoothly on the internet.",
-      h2_3: "Exclusive Night & Private Show",
-      p_3: "Discover seductive intimate moments, sensual updates, and private adult streams for mature internet users only.",
-      footer: "© 2026 Video Premium (Adult Hub) |",
-      privacy: "18+ Privacy Policy"
-    }
-  };
-
-  function switchLanguage(lang) {
-    const t = translations[lang];
-    if (!t) return;
-
-    document.getElementById('t-subtitle').innerText = t.subtitle;
-    document.getElementById('t-langlabel').innerText = t.langlabel;
-    document.getElementById('t-vidtag1').innerText = t.vidtag1;
-    document.getElementById('t-h2-1').innerText = t.h2_1;
-    document.getElementById('t-p-1').innerText = t.p_1;
-    document.getElementById('t-boxh3').innerText = t.boxh3;
-    document.getElementById('t-boxp').innerText = t.boxp;
-    document.getElementById('t-boxfoot').innerText = t.boxfoot;
-    document.getElementById('t-h2-2').innerText = t.h2_2;
-    document.getElementById('t-p-2').innerText = t.p_2;
-    document.getElementById('t-h2-3').innerText = t.h2_3;
-    document.getElementById('t-p-3').innerText = t.p_3;
-    document.getElementById('t-footer').innerHTML = `${t.footer} <a href="/p/kebijakan-privasi.html" id="t-privacy" style="color:#d92332;text-decoration:none;">${t.privacy}</a>`;
-  }
-</script>
-
 </body>
-    <script src="https://pl31329013.profitableratecpmnetwork.com/9d/45/cb/9d45cb09c38d48797d20b6237774d5ac.js"></script>
 </html>
