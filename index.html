@@ -1,257 +1,751 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Player</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-        .container {
-            width: 100%;
-            max-width: 800px;
-            position: relative;
-            padding: 10px;
-        }
-        .player-wrapper {
-            position: relative;
-            width: 100%;
-            background: #000;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        
-        /* Responsive Iframe Container */
-        .video-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* Rasio aspek 16:9 */
-            height: 0;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101010">
+<title>MISS X - Video Catalog</title>
 
-        /* 1. Styling untuk In-Page Push Pojok Bawah (Responsive) */
-        #inPagePush {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            width: 300px;
-            max-width: 45vw; /* Otomatis mengecil jika layar HP kecil */
-            background: #1e1e1e;
-            border: 1px solid #444;
-            border-radius: 8px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.8);
-            z-index: 9999;
-            display: none;
-            overflow: hidden;
-            animation: slideIn 0.4s ease-out forwards;
-        }
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101010;color:#eee;font-family:Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+:root{--red:#df344b;--panel:#1b1b1b;--line:#303030}
 
-        /* 2. Styling untuk In-Page Push di Tengah (Responsive Otomatis HP & Desktop) */
-        #inPagePushCenter {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 85%;
-            max-width: 360px; /* Pas di HP maupun Desktop */
-            background: #1e1e1e;
-            border: 2px solid #555;
-            border-radius: 10px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.9);
-            z-index: 10000;
-            display: none;
-            overflow: hidden;
-            animation: scaleIn 0.3s ease-out forwards;
-        }
+.topbar{
+ height:58px;background:#151515;border-bottom:1px solid var(--line);
+ display:flex;align-items:center;gap:14px;padding:0 15px;
+ position:sticky;top:0;z-index:30
+}
+.brand{font-size:23px;font-weight:900;white-space:nowrap}
+.brand span{color:var(--red)}
+.menu-btn{display:none;background:none;border:0;color:white;font-size:24px}
+.search{display:flex;max-width:650px;flex:1;margin:auto}
+.search input{width:100%;min-width:0;background:#090909;border:1px solid #333;color:white;padding:11px}
+.search button{background:#292929;color:white;border:1px solid #444;padding:0 15px}
+.top-right{font-size:11px;color:#aaa}
 
-        @keyframes slideIn {
-            from { transform: translateY(100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+.sidebar{
+ position:fixed;top:58px;bottom:0;left:0;width:205px;
+ background:#171717;border-right:1px solid var(--line);
+ padding:12px 9px;overflow:auto;z-index:25
+}
+.nav-label{color:#777;font-size:10px;padding:15px 11px 7px;text-transform:uppercase}
+.nav{
+ display:flex;gap:11px;align-items:center;padding:11px;
+ color:#ccc;cursor:pointer;border-radius:4px;margin:2px 0
+}
+.nav:hover,.nav.active{background:#303030;color:white}
+.nav .ico{width:18px;text-align:center}
 
-        @keyframes scaleIn {
-            from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
+main{margin-left:205px;padding:20px 22px 40px;max-width:1800px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.section-head h2{font-size:16px;margin:0}
+.section-head small{font-size:11px;color:#999}
 
-        .push-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            background: #2b2b2b;
-            font-size: 11px;
-            color: #ccc;
-        }
+.channels{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:9px;margin-bottom:27px}
+.channel{background:#1d1d1d;border:1px solid #292929;padding:11px 4px;text-align:center;cursor:pointer;border-radius:4px}
+.channel:hover{border-color:var(--red)}
+.bubble{width:42px;height:42px;border-radius:50%;margin:0 auto 8px;background:linear-gradient(135deg,#b52b55,#343b80);display:grid;place-items:center;font-weight:bold}
+.channel small{display:block;color:#999;font-size:10px;margin-top:3px}
 
-        .push-close {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 0 4px;
-        }
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tool{background:#222;color:#ddd;border:1px solid #383838;padding:8px 11px;border-radius:3px}
+.tool.active{background:#49212a;border-color:var(--red)}
 
-        .push-body {
-            padding: 10px;
-            cursor: pointer;
-        }
+.video-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 12px}
+.video-card{min-width:0;background:#1a1a1a;border:1px solid #292929;border-radius:4px;overflow:hidden;cursor:pointer}
+.video-card:hover{border-color:#777;transform:translateY(-2px)}
+.thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#292929}
+.vinfo{padding:9px 10px}
+.vtitle{font-size:12px;font-weight:bold;margin:0 0 8px;line-height:1.4}
+.meta{font-size:10px;color:#999;display:flex;justify-content:space-between;gap:5px}
+.tag{color:#ff8290;background:#49212a;padding:3px 6px;border-radius:2px}
 
-        .push-video-container {
-            width: 100%;
-            position: relative;
-            border-radius: 6px;
-            overflow: hidden;
-            background: #000;
-        }
+.pager{display:flex;justify-content:center;gap:6px;margin:22px}
+.pager button{background:#222;color:white;border:1px solid #444;padding:8px 12px}
+.pager button.active{background:var(--red)}
+.empty{display:none;background:#1b1b1b;padding:30px;text-align:center;color:#aaa}
 
-        /* Ukuran video iklan menyesuaikan otomatis */
-        .push-video-container video {
-            width: 100%;
-            height: 130px; 
-            object-fit: cover;
-            display: block;
-        }
+.player{display:none;background:#191919;border:1px solid #333;padding:12px;margin-bottom:22px}
+.player.show{display:block}
+.player-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.player-head h2{font-size:15px}
+.player-frame{width:100%;aspect-ratio:16/9;border:0;background:#000;display:block}
+.notice{background:#29221c;color:#e7d6b7;padding:12px;margin:10px 0;font-size:12px;line-height:1.5}
 
-        .push-title {
-            font-size: 12px;
-            font-weight: bold;
-            margin-top: 8px;
-            color: #ffcc00;
-            text-align: center;
-        }
+.action{border:0;background:var(--red);color:white;padding:10px 15px;border-radius:4px;font-weight:bold}
+.secondary{background:#333;border:1px solid #444}
 
-        /* Penyesuaian khusus untuk layar HP yang sangat kecil */
-        @media (max-width: 480px) {
-            #inPagePush {
-                width: 42vw;
-                bottom: 10px;
-                right: 10px;
-            }
-            .push-video-container video {
-                height: 100px;
-            }
-            .push-title {
-                font-size: 10px;
-            }
-        }
-    </style>
+.panel{display:none;background:#191919;border:1px solid #333;padding:17px;margin-bottom:20px}
+.panel.show{display:block}
+.panel h2{font-size:17px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.field label{font-size:11px;color:#aaa}
+.field input,.field select{background:#090909;color:white;border:1px solid #444;padding:11px}
+.list-row{padding:11px;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.footer{border-top:1px solid #303030;margin-top:38px;padding:18px;text-align:center;color:#777;font-size:11px}
+
+/* AGE GATE */
+.age-screen{
+ position:fixed;inset:0;background:#080808f5;z-index:100000;
+ display:grid;place-items:center;padding:20px
+}
+.age-box{max-width:430px;background:#191919;border:1px solid #444;border-radius:8px;padding:27px;text-align:center}
+.age-box h1{font-size:28px}
+.age-box h1 span{color:var(--red)}
+.age-box p{color:#bbb;line-height:1.6}
+
+/* SPONSOR POPUP */
+.missx-ad-overlay{
+ display:none;position:fixed;inset:0;z-index:99999;
+ background:rgba(0,0,0,.72);backdrop-filter:blur(5px);
+ align-items:center;justify-content:center;padding:15px
+}
+.missx-ad-box{
+ position:relative;width:100%;max-width:460px;
+ background:#fff;color:#222;border-radius:23px;padding:20px;
+ box-shadow:0 15px 50px #0008;
+ animation:missxPop .3s ease
+}
+@keyframes missxPop{
+ from{transform:scale(.9);opacity:0}
+ to{transform:scale(1);opacity:1}
+}
+.missx-ad-close{
+ position:absolute;top:12px;right:12px;width:39px;height:39px;
+ border:0;border-radius:50%;background:#edf0f5;color:#526071;
+ font-size:24px;cursor:pointer
+}
+.missx-ad-close small{font-size:8px;display:block}
+.missx-ad-content img{
+ width:100%;max-height:210px;object-fit:cover;
+ border-radius:12px;margin-bottom:13px
+}
+.missx-ad-info{display:flex;align-items:center;gap:10px;color:#c52d36;font-size:19px;font-weight:bold}
+.missx-online{background:#fce5e6;color:#c52d36;padding:4px 9px;border-radius:5px;font-size:11px}
+.missx-ad-content p{font-size:15px;line-height:1.5;color:#303744;margin:12px 0 18px}
+.missx-ad-button{
+ width:100%;padding:17px 10px;background:#d9232e;color:white;
+ border:0;border-radius:13px;font-weight:bold;font-size:16px
+}
+.missx-ad-content small{display:block;text-align:center;color:#999;margin-top:12px}
+.missx-close-real{
+ width:100%;margin-top:9px;background:#edf0f5;color:#555;
+ border:0;padding:9px;border-radius:8px;font-size:12px
+}
+
+@media(max-width:1100px){
+ .video-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .channels{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ .topbar{height:56px;padding:0 10px;gap:9px}
+ .menu-btn{display:block}
+ .brand{font-size:21px}
+ .top-right{display:none}
+ .sidebar{top:56px;width:230px;transform:translateX(-105%);transition:.2s;box-shadow:10px 0 25px #0008}
+ .sidebar.open{transform:translateX(0)}
+ main{margin-left:0;padding:16px 11px 35px}
+ .video-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px 8px}
+ .channels{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ .channel{padding:8px 2px;font-size:11px}
+ .bubble{width:34px;height:34px}
+ .vinfo{padding:7px}
+ .vtitle{font-size:11px}
+ .search input{padding:9px 7px}
+ .search button{padding:0 10px}
+}
+</style>
 </head>
+
 <body>
 
-    <div class="container">
-        <div class="player-wrapper">
-            <!-- Video Utama (Embed Trbnvideo) -->
-            <div class="video-container">
-                <iframe src="https://trbnvideo.live/e/nQ29SZ0p" allowfullscreen></iframe>
-            </div>
+<!-- KONFIRMASI USIA -->
+<div class="age-screen" id="ageScreen">
+ <div class="age-box">
+  <h1>MISS <span>X</span></h1>
+  <p>
+   Website ini hanya untuk pengunjung berusia 18 tahun ke atas.
+   Dengan melanjutkan, Anda menyatakan telah berusia minimal 18 tahun.
+  </p>
+  <button class="action" id="enterSite">Saya 18+</button>
+  <button class="action secondary" id="leaveSite">Keluar</button>
+ </div>
+</div>
 
-            <!-- In-Page Push 1: Pojok Bawah (Link Iklan 2) -->
-            <div id="inPagePush">
-                <div class="push-header">
-                    <span>Sponsored Ad</span>
-                    <button class="push-close" onclick="closePush(event, 'bottom')">&times;</button>
-                </div>
-                <div class="push-body" onclick="triggerSmartlink()">
-                    <div class="push-video-container">
-                        <video id="adVideo1" autoplay muted loop playsinline>
-                            <source src="https://imglink.cc/cdn/Age9PQjKpK.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <div class="push-title">🔥 Klik Disini Untuk Nonton Full Video!</div>
-                </div>
-            </div>
+<!-- POPUP SPONSOR -->
+<div class="missx-ad-overlay" id="missxAdOverlay">
+ <div class="missx-ad-box">
 
-            <!-- In-Page Push 2: Ditengah Layar (Link Iklan 1) -->
-            <div id="inPagePushCenter">
-                <div class="push-header">
-                    <span>Special Offer - Sponsored</span>
-                    <button class="push-close" onclick="closePush(event, 'center')">&times;</button>
-                </div>
-                <div class="push-body" onclick="triggerSmartlink()">
-                    <div class="push-video-container">
-                        <video id="adVideo2" autoplay muted loop playsinline>
-                            <source src="https://imglink.cc/cdn/O6MFUqvvr1.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <div class="push-title">⚠️ KLIK DISINI SEKARANG (FULL 34 MENIT)!</div>
-                </div>
-            </div>
+  <!-- X ini adalah tautan sponsor, bukan tombol tutup -->
+  <button id="missxAdClose" class="missx-ad-close"
+   aria-label="Buka sponsor">
+   ×
+   <small>SPONSOR</small>
+  </button>
 
-        </div>
+  <div class="missx-ad-content">
+
+   <img
+    src="https://i.ibb.co.com/mrv6Kfnz/7-Manfaat-Menggunakan-Kondom-untuk-Kesehatan-jpg.webp"
+    alt="Informasi kesehatan dan perlindungan"
+   >
+
+   <div class="missx-ad-info">
+    Info Kesehatan
+    <span class="missx-online">Sponsor</span>
+   </div>
+
+   <p>
+    Kenali informasi seputar perlindungan
+    dan kesehatan keluarga.
+   </p>
+
+   <button id="missxAdVisit" class="missx-ad-button">
+    Lihat Informasi Sekarang
+   </button>
+
+   <small>Iklan Sponsor</small>
+
+   <button id="missxRealClose" class="missx-close-real">
+    
+   </button>
+
+  </div>
+ </div>
+</div>
+
+<header class="topbar">
+ <button class="menu-btn" id="menuBtn">☰</button>
+ <div class="brand">MISS <span>X</span></div>
+
+ <form class="search" id="searchForm">
+  <input id="searchInput" type="search" placeholder="Cari video...">
+  <button>⌕</button>
+ </form>
+
+ <div class="top-right">● Video katalog</div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+ <a class="nav active" data-page="home"><span class="ico">⌂</span>Home</a>
+ <a class="nav" data-page="channels"><span class="ico">◉</span>Channels</a>
+ <a class="nav" data-page="single"><span class="ico">▣</span>Single Channel</a>
+ <a class="nav" data-page="video"><span class="ico">▶</span>Video Page</a>
+ <a class="nav" data-page="upload"><span class="ico">＋</span>Upload Videos</a>
+ <a class="nav" data-page="pages"><span class="ico">▤</span>Pages</a>
+ <a class="nav" data-page="history"><span class="ico">◷</span>History Page</a>
+ <a class="nav" data-page="categories"><span class="ico">▦</span>Categories</a>
+
+ <div class="nav-label">Subscriptions</div>
+ <a class="nav" data-page="subscriptions"><span class="ico">◉</span>My Channels</a>
+ <a class="nav" data-sort="latest"><span class="ico">◷</span>Terbaru</a>
+ <a class="nav" data-sort="popular"><span class="ico">★</span>Populer</a>
+</aside>
+
+<main>
+
+ <section class="player" id="playerPanel">
+  <div class="player-head">
+   <h2 id="playerTitle">Pemutar Video</h2>
+   <button class="tool" id="closePlayer">Tutup ✕</button>
+  </div>
+
+  <div id="smartlinkGate" class="notice" style="display:none">
+   <br><br>
+   <button class="action" id="continueVideo">PUTAR</button>
+  </div>
+
+  <iframe id="videoFrame" class="player-frame"
+   src="about:blank" allow="autoplay; fullscreen; picture-in-picture"
+   allowfullscreen></iframe>
+ </section>
+
+ <section id="channelsSection">
+  <div class="section-head">
+   <h2>Channels Categories</h2>
+   <small>Jelajahi kategori</small>
+  </div>
+
+  <div class="channels" id="channelGrid">
+   <div class="channel" data-category="All"><div class="bubble">ALL</div>All Videos<small>Semua video</small></div>
+   <div class="channel" data-category="Terbaru"><div class="bubble">NEW</div>Terbaru<small>Update video</small></div>
+   <div class="channel" data-category="Populer"><div class="bubble">★</div>Populer<small>Pilihan</small></div>
+   <div class="channel" data-category="HD"><div class="bubble">HD</div>HD Videos<small>Kualitas tinggi</small></div>
+   <div class="channel" data-category="Featured"><div class="bubble">▶</div>Featured<small>Unggulan</small></div>
+   <div class="channel" data-category="Channel 6"><div class="bubble">6</div>Channel 6<small>Koleksi video</small></div>
+   <div class="channel" data-category="Channel 7"><div class="bubble">7</div>Channel 7<small>Koleksi video</small></div>
+   <div class="channel" data-category="Channel 8"><div class="bubble">8</div>Channel 8<small>Koleksi video</small></div>
+  </div>
+ </section>
+
+ <section id="contentSection">
+  <div class="section-head">
+   <h2 id="listHeading">Featured Videos</h2>
+   <small id="countLabel">16 videos</small>
+  </div>
+
+  <div class="toolbar">
+   <button class="tool active" data-sort="random">Acak</button>
+   <button class="tool" data-sort="latest">Terbaru</button>
+   <button class="tool" data-sort="popular">Populer</button>
+   <select class="tool" id="categorySelect">
+    <option value="All">Semua kategori</option>
+    <option>Featured</option>
+    <option>HD</option>
+    <option>Channel 6</option>
+    <option>Channel 7</option>
+    <option>Channel 8</option>
+   </select>
+  </div>
+
+  <div class="video-grid" id="videoGrid"></div>
+  <div class="empty" id="emptyState">Video tidak ditemukan.</div>
+  <div class="pager" id="pager"></div>
+ </section>
+
+ <section class="panel" id="uploadPanel">
+  <h2>Tambah Video</h2>
+  <div class="notice">
+  </div>
+
+  <div class="field">
+   <label>Judul video</label>
+   <input id="newTitle" placeholder="Judul video">
+  </div>
+  <div class="field">
+   <label>Kategori</label>
+   <select id="newCategory">
+    <option>Featured</option>
+    <option>HD</option>
+    <option>Channel 6</option>
+    <option>Channel 7</option>
+    <option>Channel 8</option>
+   </select>
+  </div>
+  <div class="field">
+   <label>Link embed</label>
+   <input id="newEmbed" placeholder="https://...">
+  </div>
+  <div class="field">
+   <label>Link thumbnail</label>
+   <input id="newThumb" placeholder="https://...jpg">
+  </div>
+  <button class="action" id="addVideo">Simpan Video</button>
+ </section>
+
+ <section class="panel" id="pagesPanel">
+  <h2>Pages</h2>
+  <div class="list-row">About MISS X <button class="tool" data-info="about">Buka</button></div>
+  <div class="list-row">Privacy Policy <button class="tool" data-info="privacy">Buka</button></div>
+  <div class="list-row">DMCA / Hak Cipta <button class="tool" data-info="dmca">Buka</button></div>
+  <div class="list-row">Kontak <button class="tool" data-info="contact">Buka</button></div>
+  <div id="pageInfo" class="notice" style="display:none"></div>
+ </section>
+
+ <section class="panel" id="historyPanel">
+  <h2>Riwayat Tontonan</h2>
+  <div id="historyList"></div>
+  <button class="tool" id="clearHistory">Hapus Riwayat</button>
+ </section>
+
+ <section class="panel" id="subscriptionsPanel">
+  <h2>Subscriptions</h2>
+  <div id="subscriptionList"></div>
+ </section>
+
+ <section class="panel" id="singlePanel">
+  <h2>Single Channel</h2>
+  <div class="toolbar" id="singleChannels">
+   <button class="tool" data-channel="Featured">Featured</button>
+   <button class="tool" data-channel="HD">HD</button>
+   <button class="tool" data-channel="Channel 6">Channel 6</button>
+   <button class="tool" data-channel="Channel 7">Channel 7</button>
+   <button class="tool" data-channel="Channel 8">Channel 8</button>
+  </div>
+ </section>
+
+ <footer class="footer">MISS X © 2026 · 18+ Video Catalog</footer>
+</main>
+
+<script>
+/* LINK SMARTLINK */
+const MISSX_SMARTLINK =
+"https://www.profitableratecpmnetwork.com/hh55phupz7?key=035891703dff41ba6e0911050a5989af";
+
+/* DATA 16 VIDEO */
+const seedVideos=[
+{id:"v01",title:"Momen Privat",embed:"https://vidara.to/e/YKoI84z0JcYfS",thumb:"https://i.ibb.co.com/CKPBJ1Fp/35e98d7668313baa85735e6b9ece9115.jpg",category:"Featured",views:0},
+{id:"v02",title:"Malam Dewasa",embed:"https://vidara.to/e/jK9YT12LdMuSy",thumb:"https://i.ibb.co.com/FbctbsWK/e8366bfaf3dc1f9243d1e2be34afb6d3.jpg",category:"HD",views:0},
+{id:"v03",title:"Rahasia Berdua",embed:"https://vidara.to/e/Fmceiww0BiSCt",thumb:"https://i.ibb.co.com/shfscm2/d3abf41cac4efdb31ed4b345dade9eb4.jpg",category:"Channel 6",views:0},
+{id:"v04",title:"Sensual Night",embed:"https://vidara.to/e/W5T1ItJ3Ek9JI",thumb:"https://i.ibb.co.com/j9tWNSRK/87e2b5135e36dd52fc23701a613d0ec5.jpg",category:"Channel 7",views:0},
+{id:"v05",title:"dram4 Guru vs Murid",embed:"https://vidara.to/e/8os0TAxgXvjn9",thumb:"https://i.ibb.co.com/3mr8M7v7/1793767600887.jpg",category:"Channel 8",views:0},
+{id:"v06",title:"Waktu Intim",embed:"https://vidara.to/e/RAGNAVK2UPO2i",thumb:"https://i.ibb.co.com/9mBnCGtS/1793767589103.jpg",category:"Featured",views:0},
+{id:"v07",title:"Private Scene",embed:"https://vidara.to/e/6MYufgneOxBof",thumb:"https://i.ibb.co.com/M52PQp5p/1793767574587.jpg",category:"HD",views:0},
+{id:"v08",title:"Malam Rahasia",embed:"https://vidara.to/e/SdTDMaDEcUzsy",thumb:"https://i.ibb.co.com/0VXctt0x/1793767508529.jpg",category:"Channel 6",views:0},
+{id:"v09",title:"Dewasa Banget",embed:"https://vidara.to/e/lTWjsL7GhqE1y",thumb:"https://i.ibb.co.com/v4gL0StF/1793767490790.jpg",category:"Channel 7",views:0},
+{id:"v10",title:"Gairah Ibu Muda",embed:"https://vidara.to/e/rqu5mnTAhToiD",thumb:"https://i.ibb.co.com/xKxy1wqZ/1793767469519.jpg",category:"Channel 8",views:0},
+{id:"v11",title:"bin0r istimewa",embed:"https://vidara.to/e/Xv58ogfJLLEh2",thumb:"https://i.ibb.co.com/v6tCJFCc/1793767451951.jpg",category:"Featured",views:0},
+{id:"v12",title:"Romansa Privat",embed:"https://vidara.to/e/DNUUfuqM6zvmX",thumb:"https://i.ibb.co.com/DPBQHxhZ/1793767445024.jpg",category:"HD",views:0},
+{id:"v13",title:"pesona Tante Siska",embed:"https://vidara.to/e/bAWc4NVlSRoGo",thumb:"https://i.ibb.co/2H47tZc/IMG-20261104-100540-372.jpg",category:"Channel 6",views:0},
+{id:"v14",title:"kebun yang lebat",embed:"https://vidara.to/e/9b7s8LsHRvdHu",thumb:"https://i.ibb.co/Z6qpYMWZ/IMG-20261104-100544-611.jpg",category:"Channel 7",views:0},
+{id:"v15",title:"iBu Tir!",embed:"https://vidara.to/e/LJSJcdJH8FtRg",thumb:"https://i.ibb.co.com/LhY0hZpK/adb5c19a3fa43908058f009dd4ee995a.jpg",category:"Channel 8",views:0},
+{id:"v16",title:"Intim Berdua",embed:"https://vidara.to/e/SxbLp5o8S8Lh6",thumb:"https://i.ibb.co/2H47tZc/IMG-20261104-100540-372.jpg",category:"Featured",views:0}
+];
+
+const $=id=>document.getElementById(id);
+const read=(key,def)=>{
+ try{return JSON.parse(localStorage.getItem(key))||def}
+ catch(e){return def}
+};
+const safe=s=>String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+let extras=read("missx_extra",[]);
+let videos=[...seedVideos,...extras];
+let history=read("missx_history",[]);
+let subscriptions=read("missx_subs",[]);
+let currentVideo=null;
+let activeCategory="All";
+let activeSort="random";
+let searchTerm="";
+let currentPage=1;
+const perPage=8;
+
+function shuffle(a){
+ let x=[...a];
+ for(let i=x.length-1;i>0;i--){
+  let j=Math.floor(Math.random()*(i+1));
+  [x[i],x[j]]=[x[j],x[i]];
+ }
+ return x;
+}
+let shuffled=shuffle(videos);
+
+function saveExtras(){
+ const ids=new Set(seedVideos.map(v=>v.id));
+ localStorage.setItem("missx_extra",JSON.stringify(videos.filter(v=>!ids.has(v.id))));
+}
+
+function render(){
+ let list=[...shuffled];
+
+ if(activeCategory!=="All"&&activeCategory!=="Terbaru"&&activeCategory!=="Populer"){
+  list=list.filter(v=>v.category===activeCategory);
+ }
+
+ if(searchTerm){
+  list=list.filter(v=>(v.title+" "+v.category).toLowerCase().includes(searchTerm));
+ }
+
+ if(activeSort==="latest")list.reverse();
+ if(activeSort==="popular")list.sort((a,b)=>(b.views||0)-(a.views||0));
+
+ const pages=Math.max(1,Math.ceil(list.length/perPage));
+ currentPage=Math.min(currentPage,pages);
+ const items=list.slice((currentPage-1)*perPage,currentPage*perPage);
+
+ $("videoGrid").innerHTML="";
+
+ items.forEach(v=>{
+  const card=document.createElement("article");
+  card.className="video-card";
+  card.innerHTML=`
+   <img class="thumb" loading="lazy" src="${safe(v.thumb)}" alt="${safe(v.title)}">
+   <div class="vinfo">
+    <p class="vtitle">${safe(v.title)}</p>
+    <div class="meta">
+     <span>${safe(v.category)} · ${v.views||0} views</span>
+     <span class="tag">PLAY</span>
     </div>
+   </div>`;
+  card.addEventListener("click",()=>startVideo(v));
+  $("videoGrid").appendChild(card);
+ });
 
-    <script>
-        const inPagePush = document.getElementById('inPagePush');
-        const inPagePushCenter = document.getElementById('inPagePushCenter');
-        const adVideo1 = document.getElementById('adVideo1');
-        const adVideo2 = document.getElementById('adVideo2');
-        
-        // Interval kemunculan iklan setiap 7 detik
-        const intervalSeconds = 7000; 
-        const smartlinkURL = "https://www.profitableratecpmnetwork.com/hh55phupz7?key=035891703dff41ba6e0911050a5989af";
+ $("countLabel").textContent=list.length+" videos";
+ $("emptyState").style.display=list.length?"none":"block";
+ $("pager").innerHTML="";
 
-        let adToggle = 0;
+ for(let p=1;p<=pages;p++){
+  const b=document.createElement("button");
+  b.textContent=p;
+  if(p===currentPage)b.className="active";
+  b.onclick=()=>{currentPage=p;render()};
+  $("pager").appendChild(b);
+ }
+}
 
-        // Fungsi memunculkan iklan secara bergantian (bergiliran)
-        setInterval(function() {
-            if ((inPagePush.style.display === 'none' || inPagePush.style.display === '') && 
-                (inPagePushCenter.style.display === 'none' || inPagePushCenter.style.display === '')) {
-                
-                if (adToggle === 0) {
-                    inPagePushCenter.style.display = 'block';
-                    adVideo2.play().catch(e => console.log("Autoplay blocked:", e));
-                    adToggle = 1; 
-                } else {
-                    inPagePush.style.display = 'block';
-                    adVideo1.play().catch(e => console.log("Autoplay blocked:", e));
-                    adToggle = 0; 
-                }
-            }
-        }, intervalSeconds);
+function startVideo(v){
+ currentVideo=v;
 
-        // Fungsi saat area iklan diklik
-        function triggerSmartlink() {
-            window.open(smartlinkURL, '_blank');
-        }
+ // Buka sponsor dari klik pengunjung
+ window.open(MISSX_SMARTLINK,"_blank","noopener,noreferrer");
 
-        // Fungsi saat tombol X diklik (Membuka Smartlink & Menutup Banner)
-        function closePush(event, type) {
-            event.stopPropagation();
-            window.open(smartlinkURL, '_blank');
-            
-            if (type === 'bottom') {
-                inPagePush.style.display = 'none';
-                adVideo1.pause();
-            } else if (type === 'center') {
-                inPagePushCenter.style.display = 'none';
-                adVideo2.pause();
-            }
-        }
-    </script>
+ $("playerPanel").classList.add("show");
+ $("playerTitle").textContent=v.title;
+ $("videoFrame").src="about:blank";
+ $("smartlinkGate").style.display="block";
+ $("playerPanel").scrollIntoView({behavior:"smooth"});
 
+ history=history.filter(x=>x.id!==v.id);
+ history.unshift(v);
+ history=history.slice(0,50);
+ localStorage.setItem("missx_history",JSON.stringify(history));
+
+ v.views=(v.views||0)+1;
+ saveExtras();
+}
+
+$("continueVideo").onclick=()=>{
+ if(currentVideo){
+  $("videoFrame").src=currentVideo.embed;
+  $("smartlinkGate").style.display="none";
+ }
+};
+
+$("closePlayer").onclick=()=>{
+ $("videoFrame").src="about:blank";
+ $("playerPanel").classList.remove("show");
+ currentVideo=null;
+};
+
+function showHome(){
+ hidePanels();
+ $("channelsSection").style.display="";
+ $("contentSection").style.display="";
+ $("playerPanel").classList.remove("show");
+ activeCategory="All";
+ searchTerm="";
+ currentPage=1;
+ $("searchInput").value="";
+ render();
+}
+
+function hidePanels(){
+ ["uploadPanel","pagesPanel","historyPanel","subscriptionsPanel","singlePanel"]
+ .forEach(id=>$(id).classList.remove("show"));
+}
+
+function showPanel(name){
+ hidePanels();
+ $("channelsSection").style.display="none";
+ $("contentSection").style.display="none";
+ $("playerPanel").classList.remove("show");
+
+ const map={
+  upload:"uploadPanel",pages:"pagesPanel",history:"historyPanel",
+  subscriptions:"subscriptionsPanel",single:"singlePanel"
+ };
+ if(map[name])$(map[name]).classList.add("show");
+ if(name==="history")renderHistory();
+ if(name==="subscriptions")renderSubscriptions();
+}
+
+document.querySelectorAll(".nav").forEach(a=>{
+ a.addEventListener("click",()=>{
+  document.querySelectorAll(".nav").forEach(n=>n.classList.remove("active"));
+  a.classList.add("active");
+  $("sidebar").classList.remove("open");
+
+  if(a.dataset.page==="home"){showHome();return}
+  if(a.dataset.page==="channels"||a.dataset.page==="categories"){
+   showHome();$("channelsSection").scrollIntoView({behavior:"smooth"});return;
+  }
+  if(a.dataset.page==="video"){
+   showHome();$("contentSection").scrollIntoView({behavior:"smooth"});return;
+  }
+  if(a.dataset.page){showPanel(a.dataset.page);return}
+  if(a.dataset.sort){
+   showHome();
+   activeSort=a.dataset.sort;
+   currentPage=1;
+   $("listHeading").textContent=a.dataset.sort==="latest"?"Video Terbaru":"Video Populer";
+   render();
+  }
+ });
+});
+
+function filterCategory(c){
+ activeCategory=c;
+ activeSort="random";
+ currentPage=1;
+ $("listHeading").textContent=c==="All"?"Featured Videos":c;
+ $("channelsSection").style.display="";
+ $("contentSection").style.display="";
+ hidePanels();
+ render();
+ $("contentSection").scrollIntoView({behavior:"smooth"});
+}
+
+$("channelGrid").addEventListener("click",e=>{
+ const c=e.target.closest(".channel");
+ if(c)filterCategory(c.dataset.category);
+});
+
+$("categorySelect").onchange=e=>filterCategory(e.target.value);
+
+document.querySelectorAll(".toolbar [data-sort]").forEach(b=>{
+ b.onclick=()=>{
+  document.querySelectorAll(".toolbar [data-sort]").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  activeSort=b.dataset.sort;
+  currentPage=1;
+  render();
+ };
+});
+
+$("searchForm").onsubmit=e=>e.preventDefault();
+$("searchInput").oninput=e=>{
+ searchTerm=e.target.value.trim().toLowerCase();
+ activeCategory="All";
+ currentPage=1;
+ $("channelsSection").style.display=searchTerm?"none":"";
+ $("listHeading").textContent=searchTerm?"Hasil Pencarian":"Featured Videos";
+ render();
+};
+
+$("menuBtn").onclick=()=> $("sidebar").classList.toggle("open");
+
+$("singleChannels").onclick=e=>{
+ const b=e.target.closest("[data-channel]");
+ if(b)filterCategory(b.dataset.channel);
+};
+
+$("addVideo").onclick=()=>{
+ const title=$("newTitle").value.trim();
+ const embed=$("newEmbed").value.trim();
+ const thumb=$("newThumb").value.trim();
+ const category=$("newCategory").value;
+
+ if(!title||!embed||!thumb){
+  alert("Lengkapi semua kolom.");
+  return;
+ }
+
+ try{
+  if(!["http:","https:"].includes(new URL(embed).protocol)||
+     !["http:","https:"].includes(new URL(thumb).protocol))throw 0;
+ }catch(e){
+  alert("Link tidak valid.");
+  return;
+ }
+
+ videos.push({
+  id:"extra_"+Date.now(),title,embed,thumb,category,views:0
+ });
+ shuffled=shuffle(videos);
+ saveExtras();
+
+ $("newTitle").value="";
+ $("newEmbed").value="";
+ $("newThumb").value="";
+ alert("Video tersimpan di browser ini.");
+ showHome();
+};
+
+function renderHistory(){
+ $("historyList").innerHTML="";
+ if(!history.length){
+  $("historyList").textContent="Belum ada riwayat.";
+  return;
+ }
+ history.forEach(v=>{
+  const row=document.createElement("div");
+  row.className="list-row";
+  row.innerHTML=`<span>${safe(v.title)}</span><button class="tool">Buka</button>`;
+  row.querySelector("button").onclick=()=>startVideo(v);
+  $("historyList").appendChild(row);
+ });
+}
+
+$("clearHistory").onclick=()=>{
+ if(confirm("Hapus riwayat?")){
+  history=[];
+  localStorage.removeItem("missx_history");
+  renderHistory();
+ }
+};
+
+function renderSubscriptions(){
+ $("subscriptionList").innerHTML="";
+ ["Featured","HD","Channel 6","Channel 7","Channel 8"].forEach(c=>{
+  const row=document.createElement("div");
+  row.className="list-row";
+  const followed=subscriptions.includes(c);
+  row.innerHTML=`<span>${c}</span><button class="tool">${followed?"Mengikuti":"Ikuti"}</button>`;
+  row.querySelector("button").onclick=()=>{
+   subscriptions=followed?subscriptions.filter(x=>x!==c):[...subscriptions,c];
+   localStorage.setItem("missx_subs",JSON.stringify(subscriptions));
+   renderSubscriptions();
+  };
+  $("subscriptionList").appendChild(row);
+ });
+}
+
+const pageTexts={
+ about:"MISS X adalah katalog video berbasis embed. Konten hanya ditampilkan jika memiliki izin distribusi.",
+ privacy:"Riwayat dan langganan disimpan secara lokal di browser pengunjung.",
+ dmca:"Pemilik hak cipta dapat menghubungi pengelola dengan menyertakan URL materi dan bukti kepemilikan.",
+ contact:"Tambahkan alamat email resmi pengelola situs di bagian ini."
+};
+
+$("pagesPanel").onclick=e=>{
+ const b=e.target.closest("[data-info]");
+ if(!b)return;
+ $("pageInfo").style.display="block";
+ $("pageInfo").textContent=pageTexts[b.dataset.info];
+};
+
+/* KONFIRMASI USIA + SMARTLINK */
+$("enterSite").onclick=()=>{
+ window.open(MISSX_SMARTLINK,"_blank","noopener,noreferrer");
+ $("ageScreen").remove();
+};
+
+$("leaveSite").onclick=()=>{
+ document.body.innerHTML='<div style="padding:40px;text-align:center;color:white">Anda telah keluar dari MISS X.</div>';
+};
+
+/* POPUP SPONSOR */
+const adOverlay=$("missxAdOverlay");
+
+function showMissXAd(){
+ if(!adOverlay)return;
+ adOverlay.style.display="flex";
+}
+
+// Tombol X membuka Smartlink kemudian menutup pop-up
+$("missxAdClose").onclick=()=>{
+ window.open(MISSX_SMARTLINK,"_blank","noopener,noreferrer");
+ adOverlay.style.display="none";
+};
+
+// Tombol CTA membuka Smartlink kemudian menutup pop-up
+$("missxAdVisit").onclick=()=>{
+ window.open(MISSX_SMARTLINK,"_blank","noopener,noreferrer");
+ adOverlay.style.display="none";
+};
+
+// Tombol tutup biasa hanya menutup pop-up
+$("missxRealClose").onclick=()=>{
+ adOverlay.style.display="none";
+};
+
+// Kemunculan pertama setelah 15 detik
+setTimeout(showMissXAd,15000);
+
+// Kemunculan berikutnya setiap 15 detik jika pop-up sedang tertutup
+setInterval(()=>{
+ if(adOverlay.style.display!=="flex"){
+  showMissXAd();
+ }
+},15000);
+
+/* JALANKAN */
+render();
+</script>
 </body>
 </html>
