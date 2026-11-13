@@ -390,10 +390,10 @@ const seedVideos=[
 {id:"v10",title:"Gairah Ibu Muda",embed:"https://vidara.to/e/rqu5mnTAhToiD",thumb:"https://i.ibb.co.com/xKxy1wqZ/1793767469519.jpg",category:"Channel 8",views:0},
 {id:"v11",title:"bin0r istimewa",embed:"https://vidara.to/e/Xv58ogfJLLEh2",thumb:"https://i.ibb.co.com/v6tCJFCc/1793767451951.jpg",category:"Featured",views:0},
 {id:"v12",title:"Romansa Privat",embed:"https://vidara.to/e/DNUUfuqM6zvmX",thumb:"https://i.ibb.co.com/DPBQHxhZ/1793767445024.jpg",category:"HD",views:0},
-{id:"v13",title:"pesona Tante Siska",embed:"https://vidara.to/e/bAWc4NVlSRoGo",thumb:"https://i.ibb.co/2H47tZc/IMG-20261104-100540-372.jpg",category:"Channel 6",views:0},
-{id:"v14",title:"kebun yang lebat",embed:"https://vidara.to/e/9b7s8LsHRvdHu",thumb:"https://i.ibb.co/Z6qpYMWZ/IMG-20261104-100544-611.jpg",category:"Channel 7",views:0},
+{id:"v13",title:"pesona Tante Siska",embed:"https://vidara.to/e/bAWc4NVlSRoGo",thumb:"https://i.ibb.co.com/39CKxZHV/15904f28d9db2e54ed295de4a0b4e5ca.jpg",category:"Channel 6",views:0},
+{id:"v14",title:"kebun yang lebat",embed:"https://vidara.to/e/9b7s8LsHRvdHu",thumb:"https://i.ibb.co.com/gZbnrnB0/a948d48b73c511ade3c955859ed667eb.jpg",category:"Channel 7",views:0},
 {id:"v15",title:"iBu Tir!",embed:"https://vidara.to/e/LJSJcdJH8FtRg",thumb:"https://i.ibb.co.com/LhY0hZpK/adb5c19a3fa43908058f009dd4ee995a.jpg",category:"Channel 8",views:0},
-{id:"v16",title:"Intim Berdua",embed:"https://vidara.to/e/SxbLp5o8S8Lh6",thumb:"https://i.ibb.co/2H47tZc/IMG-20261104-100540-372.jpg",category:"Featured",views:0}
+{id:"v16",title:"Intim Berdua",embed:"https://vidara.to/e/SxbLp5o8S8Lh6",thumb:"https://i.ibb.co.com/1JvBdcXF/f3d158ae09f639aacc9c1a5b00fa00fd.jpg",category:"Featured",views:0}
 ];
 
 const $=id=>document.getElementById(id);
@@ -700,9 +700,24 @@ $("pagesPanel").onclick=e=>{
 };
 
 /* KONFIRMASI USIA + SMARTLINK */
+let missXAdTimer = null;
+
 $("enterSite").onclick=()=>{
  window.open(MISSX_SMARTLINK,"_blank","noopener,noreferrer");
+
  $("ageScreen").remove();
+
+ // Mulai hitungan setelah pengunjung klik 18+
+ missXAdTimer = setInterval(()=>{
+   if(adOverlay.style.display !== "flex"){
+     showMissXAd();
+   }
+ }, 20000);
+
+ // Pop-up pertama muncul setelah 20 detik
+ setTimeout(()=>{
+   showMissXAd();
+ }, 20000);
 };
 
 $("leaveSite").onclick=()=>{
@@ -733,16 +748,6 @@ $("missxAdVisit").onclick=()=>{
 $("missxRealClose").onclick=()=>{
  adOverlay.style.display="none";
 };
-
-// Kemunculan pertama setelah 15 detik
-setTimeout(showMissXAd,15000);
-
-// Kemunculan berikutnya setiap 15 detik jika pop-up sedang tertutup
-setInterval(()=>{
- if(adOverlay.style.display!=="flex"){
-  showMissXAd();
- }
-},15000);
 
 /* JALANKAN */
 render();
